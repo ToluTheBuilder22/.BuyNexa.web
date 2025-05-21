@@ -135,50 +135,51 @@
     </form>
   </div>
 
-  <script>
-    function toggleDiamondOptions() {
-      const options = document.getElementById('diamondOptions');
-      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+ <script>
+  function toggleDiamondOptions() {
+    const options = document.getElementById('diamondOptions');
+    options.style.display = options.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function startVoice(fieldId) {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Voice input not supported in this browser.");
+      return;
     }
 
-    function startVoice(fieldId) {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert("Voice input not supported in this browser.");
-        return;
-      }
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
 
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'en-US';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
+    recognition.start();
 
-      recognition.start();
+    recognition.onresult = function(event) {
+      document.getElementById(fieldId).value = event.results[0][0].transcript;
+    };
+  }
 
-      recognition.onresult = function(event) {
-        document.getElementById(fieldId).value = event.results[0][0].transcript;
-      };
+  document.getElementById("topupForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const uid = document.getElementById("uid").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const diamondOption = document.querySelector('input[name="diamond"]:checked');
+
+    if (!uid || !email || !diamondOption) {
+      alert("Please fill all fields and select a diamond amount.");
+      return;
     }
 
-    document.getElementById("topupForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+    const diamond = diamondOption.value;
+    const message = `*Free Fire Top-Up Request*\n\nUID: ${uid}\nEmail: ${email}\nSelected Package: ${diamond}`;
 
-      const uid = document.getElementById("uid").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const diamondOption = document.querySelector('input[name="diamond"]:checked');
+    const phoneNumber = "2349154609367"; // Your WhatsApp number
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-      if (!uid || !email || !diamondOption) {
-        alert("Please fill all fields and select a diamond amount.");
-        return;
-      }
+    window.open(whatsappURL, "_blank");
+  });
+</script>
 
-      const diamond = diamondOption.value;
-      const message = '*Free Fire Top-Up Request*\n\nUID: ${uid}\nEmail: ${email}\nSelected Package: ${diamond}';
-
-      const phoneNumber = "2349154609367"; // Your WhatsApp number
-      const whatsappURL = 'https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}';
-
-      window.open(whatsappURL, "_blank");
-    });
-  </script>
 </body>
 </html>
