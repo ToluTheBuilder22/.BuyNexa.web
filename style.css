@@ -215,3 +215,22 @@ html, body {
   overscroll-behavior: contain;
   touch-action: pan-y;     /* Allow vertical hand scroll only */
 }
+body {
+  font-size: 1rem; /* relative size, better on different screens */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 1.2em; /* responsive font sizes */
+}
+
+.container {
+  padding: 10px;
+}
+
+button, input, select {
+  font-size: 1rem;
+  padding: 0.5em 1em;
+}
